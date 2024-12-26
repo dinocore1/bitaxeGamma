@@ -1,10 +1,14 @@
 name: Build PCB
-on: [push]
+on:
+  push:
+    paths:
+    - '**.kicad_pcb'
+  pull_request:
+    paths:
+      - '**.kicad_pcb'
 jobs:
   Build-pcb:
     runs-on: ubuntu-latest
-    container:
-      image: registry.gitlab.com/nlighten-systems/kicad_ci:8
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -12,7 +16,12 @@ jobs:
           fetch-depth: 0
       - name: Mark github workspace as safe
         run: git config --global --add safe.directory "$PWD"
-      - run: make build-pcb
+      - name: Build PCB
+        uses: INTI-CMNB/KiBot@v2_k8
+        with:
+          config: kibot.yaml
+          dir: output
+          schema: bitaxeGamma.kicad_sch
       - name: Archive outputs
         uses: actions/upload-artifact@v4
         with:
