@@ -1,11 +1,5 @@
 name: Build PCB
-on:
-  push:
-    paths:
-    - '**.kicad_pcb'
-  pull_request:
-    paths:
-      - '**.kicad_pcb'
+on: [push]
 jobs:
   Build-pcb:
     runs-on: ubuntu-latest
